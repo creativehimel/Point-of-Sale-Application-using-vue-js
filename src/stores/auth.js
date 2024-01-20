@@ -124,10 +124,26 @@ export const useAuthStore = defineStore('auth', () => {
     isLoader.value = false
   }
 
+  // User Logout Auth Store function
+  function logout() {
+    //await axios.post()
+    isAuthenticated.value = false
+    localStorage.removeItem('token')
+    localStorage.setItem('isAuthenticated', JSON.stringify(isAuthenticated.value))
+    toast('Logout successfully', {
+      type: 'success',
+      transition: 'zoom',
+      dangerouslyHTMLString: true
+    })
+    setTimeout(() => {
+      router.push('/login')
+    }, 1000)
+  }
   return {
     isLoader,
     isAuthenticated,
     userLogin,
-    userRegistration
+    userRegistration,
+    logout
   }
 })
