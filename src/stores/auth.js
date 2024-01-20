@@ -194,12 +194,73 @@ export const useAuthStore = defineStore('auth', () => {
       })
     isLoader.value = false
   }
+
+  // User verify OTP Auth Store function
+  async function verifyOTP(otp) {
+    isLoader.value = true
+    let email = JSON.parse(sessionStorage.getItem('email'))
+    await axios
+      .post(`${baseURL}/verify-otp`, {
+        otp: otp,
+        email: email
+      })
+      .then((res) => {
+        if (res.data.status == 'success') {
+          let token = res.data.token
+          toast(res.data.message, {
+            type: 'success',
+            transition: 'zoom',
+            dangerouslyHTMLString: true
+          })
+          sessionStorage.clear()
+          localStorage.setItem('token', JSON.stringify(token))
+          setTimeout(() => {
+            router.push('/reset-password')
+          }, 1000)
+        } else if (res.data.status == 'failed') {
+          toast(res.data.message, {
+            type: 'error',
+            transition: 'zoom',
+            dangerouslyHTMLString: true
+          })
+        }
+      })
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status == 422) {
+            let errorList = error.response.data.message
+            for (let key in errorList) {
+              toast(errorList[key][0], {
+                type: 'error',
+                transition: 'zoom',
+                dangerouslyHTMLString: true
+              })
+            }
+          }
+        } else if (error.request) {
+          toast('No response received from the server.', {
+            type: 'error',
+            transition: 'zoom',
+            dangerouslyHTMLString: true
+          })
+        } else {
+          toast(error.message, {
+            type: 'error',
+            transition: 'zoom',
+            dangerouslyHTMLString: true
+          })
+        }
+      })
+    isLoader.value = false
+  }
+
   return {
     isLoader,
     isAuthenticated,
     userLogin,
     userRegistration,
     logout,
-    forgotPassword
+    forgotPassword,
+    verifyOTP
   }
 })
