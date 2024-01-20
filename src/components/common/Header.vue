@@ -10,7 +10,8 @@ const mobileMenu = ref(false)
 <template>
   <header class="bg-white py-2 md:py-3.5 px-6 shadow">
     <nav class="container mx-auto md:flex justify-between items-center">
-      <img src="../../assets/images/logo.png" alt="" class="w-28" />
+      <RouterLink to="/"><img src="../../assets/images/logo.png" alt="" class="w-28" /></RouterLink>
+      
       <span
         @click="mobileMenu = !mobileMenu"
         class="absolute right-6 top-4 cursor-pointer md:hidden"
