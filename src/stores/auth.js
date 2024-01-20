@@ -139,11 +139,67 @@ export const useAuthStore = defineStore('auth', () => {
       router.push('/login')
     }, 1000)
   }
+
+  // User forgot password Auth Store function
+  async function forgotPassword(email) {
+    isLoader.value = true
+    await axios
+      .post(`${baseURL}/send-otp`, {
+        email: email
+      })
+      .then((res) => {
+        if (res.data.status == 'success') {
+          toast(res.data.message, {
+            type: 'success',
+            transition: 'zoom',
+            dangerouslyHTMLString: true
+          })
+          sessionStorage.setItem('email', JSON.stringify(email))
+          setTimeout(() => {
+            router.push('/verify-otp')
+          }, 1000)
+        } else if (res.data.status == 'error') {
+          toast(res.data.message, {
+            type: 'error',
+            transition: 'zoom',
+            dangerouslyHTMLString: true
+          })
+        }
+      })
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status == 422) {
+            let errorList = error.response.data.message
+            for (let key in errorList) {
+              toast(errorList[key][0], {
+                type: 'error',
+                transition: 'zoom',
+                dangerouslyHTMLString: true
+              })
+            }
+          }
+        } else if (error.request) {
+          toast('No response received from the server.', {
+            type: 'error',
+            transition: 'zoom',
+            dangerouslyHTMLString: true
+          })
+        } else {
+          toast(error.message, {
+            type: 'error',
+            transition: 'zoom',
+            dangerouslyHTMLString: true
+          })
+        }
+      })
+    isLoader.value = false
+  }
   return {
     isLoader,
     isAuthenticated,
     userLogin,
     userRegistration,
-    logout
+    logout,
+    forgotPassword
   }
 })
