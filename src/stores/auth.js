@@ -254,6 +254,72 @@ export const useAuthStore = defineStore('auth', () => {
     isLoader.value = false
   }
 
+  // User reset password Auth Store function
+  async function resetPassword(password, cpassword) {
+    isLoader.value = true
+    let token = JSON.parse(localStorage.getItem('token'))
+    await axios
+      .post(
+        `${baseURL}/reset-password`,
+        {
+          password: password,
+          password_confirmation: cpassword
+        },
+        {
+          headers: {
+            //'Content-Type': 'application/json',
+            token: token
+          }
+        }
+      )
+      .then((res) => {
+        if (res.data.status == 'success') {
+          toast(res.data.message, {
+            type: 'success',
+            transition: 'zoom',
+            dangerouslyHTMLString: true
+          })
+          localStorage.clear()
+          setTimeout(() => {
+            router.push('/login')
+          }, 1000)
+        } else if (res.data.status == 'failed') {
+          toast(res.data.message, {
+            type: 'error',
+            transition: 'zoom',
+            dangerouslyHTMLString: true
+          })
+        }
+      })
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status == 422) {
+            let errorList = error.response.data.message
+            for (let key in errorList) {
+              toast(errorList[key][0], {
+                type: 'error',
+                transition: 'zoom',
+                dangerouslyHTMLString: true
+              })
+            }
+          }
+        } else if (error.request) {
+          toast('No response received from the server.', {
+            type: 'error',
+            transition: 'zoom',
+            dangerouslyHTMLString: true
+          })
+        } else {
+          toast(error.message, {
+            type: 'error',
+            transition: 'zoom',
+            dangerouslyHTMLString: true
+          })
+        }
+      })
+    isLoader.value = false
+  }
+
   return {
     isLoader,
     isAuthenticated,
@@ -261,6 +327,7 @@ export const useAuthStore = defineStore('auth', () => {
     userRegistration,
     logout,
     forgotPassword,
-    verifyOTP
+    verifyOTP,
+    resetPassword
   }
 })
