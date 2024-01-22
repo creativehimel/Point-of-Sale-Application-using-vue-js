@@ -11,10 +11,14 @@ export const useAuthStore = defineStore('auth', () => {
   const isLoader = ref(false)
   const isAuthenticated = ref(false)
   const token = ref('')
+  const resetPasswordToken = ref('')
 
   if (JSON.parse(localStorage.getItem('isAuthenticated')) && JSON.parse(localStorage.getItem('token'))) {
     isAuthenticated.value = JSON.parse(localStorage.getItem('isAuthenticated'))
     token.value = JSON.parse(localStorage.getItem('token'))
+  }
+  if (JSON.parse(localStorage.getItem('resetPasswordToken'))) {
+    resetPasswordToken.value = JSON.parse(localStorage.getItem('resetPasswordToken'))
   }
 
   // User Login Auth Store function
@@ -259,7 +263,6 @@ export const useAuthStore = defineStore('auth', () => {
   // User reset password Auth Store function
   async function resetPassword(password, cpassword) {
     isLoader.value = true
-    let resetPasswordToken = JSON.parse(localStorage.getItem('resetPasswordToken'))
     await axios
       .post(
         `${baseURL}/reset-password`,
