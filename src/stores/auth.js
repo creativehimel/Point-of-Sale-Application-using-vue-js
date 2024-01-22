@@ -10,9 +10,11 @@ const baseURL = import.meta.env.VITE_API_URL
 export const useAuthStore = defineStore('auth', () => {
   const isLoader = ref(false)
   const isAuthenticated = ref(false)
+  const token = ref('')
 
-  if (JSON.parse(localStorage.getItem('isAuthenticated'))) {
+  if (JSON.parse(localStorage.getItem('isAuthenticated')) && JSON.parse(localStorage.getItem('token'))) {
     isAuthenticated.value = JSON.parse(localStorage.getItem('isAuthenticated'))
+    token.value = JSON.parse(localStorage.getItem('token'))
   }
 
   // User Login Auth Store function
@@ -206,14 +208,14 @@ export const useAuthStore = defineStore('auth', () => {
       })
       .then((res) => {
         if (res.data.status == 'success') {
-          let token = res.data.token
+          let resetPasswordToken = res.data.token
           toast(res.data.message, {
             type: 'success',
             transition: 'zoom',
             dangerouslyHTMLString: true
           })
           sessionStorage.clear()
-          localStorage.setItem('token', JSON.stringify(token))
+          localStorage.setItem('resetPasswordToken', JSON.stringify(resetPasswordToken))
           setTimeout(() => {
             router.push('/reset-password')
           }, 1000)
@@ -257,7 +259,7 @@ export const useAuthStore = defineStore('auth', () => {
   // User reset password Auth Store function
   async function resetPassword(password, cpassword) {
     isLoader.value = true
-    let token = JSON.parse(localStorage.getItem('token'))
+    let resetPasswordToken = JSON.parse(localStorage.getItem('resetPasswordToken'))
     await axios
       .post(
         `${baseURL}/reset-password`,
@@ -268,7 +270,7 @@ export const useAuthStore = defineStore('auth', () => {
         {
           headers: {
             //'Content-Type': 'application/json',
-            token: token
+            token: resetPasswordToken
           }
         }
       )
@@ -283,12 +285,16 @@ export const useAuthStore = defineStore('auth', () => {
           setTimeout(() => {
             router.push('/login')
           }, 1000)
-        } else if (res.data.status == 'failed') {
+        } else if (res.data.status == 401) {
           toast(res.data.message, {
             type: 'error',
             transition: 'zoom',
             dangerouslyHTMLString: true
           })
+          localStorage.clear()
+          setTimeout(() => {
+            router.push('/login')
+          }, 1000)
         }
       })
       .catch((error) => {

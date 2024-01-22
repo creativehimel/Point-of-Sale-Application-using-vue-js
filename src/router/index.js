@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import NProgress from 'nprogress'
+import { useAuthStore } from '@/stores/auth.js'
 import Home from '@/views/Home.vue'
 import About from '@/views/About.vue'
 import Contact from '@/views/Contact.vue'
@@ -63,14 +64,29 @@ const router = createRouter({
     {
       path: '/reset-password',
       name: 'ResetPassword',
-      component: ResetPassword
+      component: ResetPassword,
+      meta:{
+        requiresAuth: true
+      }
     },
     {
       path: '/admin/dashboard',
       name: 'Dashboard',
-      component: Dashboard
+      component: Dashboard,
+      meta:{
+        requiresAuth: true
+      }
     }
   ]
+})
+
+router.beforeEach((to, from, next)=>{
+  const auth = useAuthStore();
+  if (to.meta.requiresAuth && !auth.isAuthenticated && auth.token == ''){
+    next('/login');
+  }else {
+    next();
+  }
 })
 
 router.beforeResolve((to, from, next) => {
