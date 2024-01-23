@@ -12,6 +12,8 @@ import ForgotPassword from '@/views/Auth/ForgotPassword.vue'
 import VerifyOTP from '@/views/Auth/VerifyOTP.vue'
 import ResetPassword from '@/views/Auth/ResetPassword.vue'
 import Dashboard from '@/views/Admin/Dashboard.vue'
+import UserProfile from '@/views/Admin/UserProfile.vue'
+import EditUserProfile from '@/views/Admin/EditUserProfile.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -76,15 +78,31 @@ const router = createRouter({
       meta:{
         requiresAuth: true
       }
+    },
+    {
+      path: '/admin/profile',
+      name: 'Profile',
+      component: UserProfile,
+      meta:{
+        requiresResetToken: true
+      }
+    },
+    {
+      path: '/admin/profile/edit',
+      name: 'EditProfile',
+      component: EditUserProfile,
+      meta:{
+        requiresAuth: true
+      }
     }
   ]
 })
 
 router.beforeEach((to, from, next)=>{
   const auth = useAuthStore();
-  if (to.meta.requiresAuth && !auth.isAuthenticated && auth.token != ''){
+  if (to.meta.requiresAuth && !auth.isAuthenticated && auth.token !== ''){
     next('/login');
-  }else if(to.meta.requiresAuth && !auth.isAuthenticated && auth.resetPasswordToken != ''){
+  }else if(to.meta.requiresResetToken && auth.resetPasswordToken !== ''){
     next('/login')
   }
   else {

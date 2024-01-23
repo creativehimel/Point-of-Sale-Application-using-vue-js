@@ -13,8 +13,11 @@ export const useAuthStore = defineStore('auth', () => {
   const token = ref('')
   const resetPasswordToken = ref('')
 
-  if (JSON.parse(localStorage.getItem('isAuthenticated')) && JSON.parse(localStorage.getItem('token'))) {
+  if (JSON.parse(localStorage.getItem('isAuthenticated'))) {
     isAuthenticated.value = JSON.parse(localStorage.getItem('isAuthenticated'))
+    token.value = JSON.parse(localStorage.getItem('token'))
+  }
+  if (JSON.parse(localStorage.getItem('token'))) {
     token.value = JSON.parse(localStorage.getItem('token'))
   }
   if (JSON.parse(localStorage.getItem('resetPasswordToken'))) {
