@@ -1,6 +1,7 @@
 <script setup>
 import { reactive } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import AuthLayout from '@/components/layouts/AuthLayout.vue'
 const auth = useAuthStore()
 
 const loginData = reactive({
@@ -9,8 +10,8 @@ const loginData = reactive({
 })
 </script>
 <template>
-  <section class="bg-slate-100 px-4 py-16 md:py-28 flex items-center justify-center">
-    <div class="bg-white max-w-lg w-full rounded p-5">
+  <AuthLayout>
+    <div class="bg-white max-w-lg w-full rounded p-5 shadow">
       <from class="" action="#" method="POST">
         <h2 class="text-center text-3xl font-bold pt-5">Welcome Back !</h2>
         <h4 class="text-center text-sm font-semibold py-2">
@@ -32,7 +33,7 @@ const loginData = reactive({
               <label for="password">Password</label>
               <span>
                 <RouterLink to="/forgot-password" class="text-gray-500"
-                  >Forgot Password?</RouterLink
+                >Forgot Password?</RouterLink
                 >
               </span>
             </div>
@@ -84,12 +85,12 @@ const loginData = reactive({
       </from>
       <p class="text-center py-1.5">
         Don't have an account ?
-        <RouterLink to="/register" class="pl-2 text-red-600 hover:underline underline-offset-2"
-          >Signup</RouterLink
+        <RouterLink to="/register" class="pl-2 text-blue-600 hover:underline underline-offset-2"
+        >Signup</RouterLink
         >
       </p>
     </div>
-  </section>
+  </AuthLayout>
 </template>
 
 <style scoped></style>

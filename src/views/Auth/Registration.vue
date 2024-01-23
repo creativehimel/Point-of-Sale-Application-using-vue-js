@@ -1,6 +1,7 @@
 <script setup>
 import { reactive } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import AuthLayout from '@/components/layouts/AuthLayout.vue'
 const auth = useAuthStore()
 
 const userData = reactive({
@@ -12,8 +13,8 @@ const userData = reactive({
 })
 </script>
 <template>
-  <section class="bg-slate-100 px-4 py-16 md:py-28 flex items-center justify-center">
-    <div class="bg-white max-w-3xl w-full rounded p-5">
+  <AuthLayout>
+    <div class="bg-white max-w-3xl w-full rounded p-5 shadow">
       <from method="POST" action="#">
         <h2 class="text-center text-2xl font-[700] pt-5">Create New Account</h2>
         <h4 class="text-center text-sm font-[500] py-2">Get your free velzon account now</h4>
@@ -113,11 +114,11 @@ const userData = reactive({
         </div>
       </from>
       <p class="text-center py-1.5">
-        Don't have an account ?
-        <RouterLink to="/register" class="pl-2 text-red-600">Signup</RouterLink>
+        Have any account?
+        <RouterLink to="/login" class="pl-2 text-blue-600">Login</RouterLink>
       </p>
     </div>
-  </section>
+  </AuthLayout>
 </template>
 
 <style scoped></style>

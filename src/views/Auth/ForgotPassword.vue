@@ -1,11 +1,12 @@
 <script setup>
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import AuthLayout from '@/components/layouts/AuthLayout.vue'
 const auth = useAuthStore()
 const email = ref('')
 </script>
 <template>
-  <section class="bg-slate-100 px-4 py-16 md:py-28 flex items-center justify-center">
+  <AuthLayout>
     <div class="bg-white max-w-lg w-full rounded p-5 shadow">
       <from class="" action="#" method="POST">
         <h2 class="text-center text-xl md:text-3xl font-bold pt-5">Forgot Your Password?</h2>
@@ -58,7 +59,7 @@ const email = ref('')
         </div>
       </from>
     </div>
-  </section>
+  </AuthLayout>
 </template>
 
 <style scoped></style>

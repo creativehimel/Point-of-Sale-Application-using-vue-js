@@ -15,6 +15,8 @@ import Dashboard from '@/views/Admin/Dashboard.vue'
 import UserProfile from '@/views/Admin/UserProfile.vue'
 import EditUserProfile from '@/views/Admin/EditUserProfile.vue'
 
+
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -68,7 +70,7 @@ const router = createRouter({
       name: 'ResetPassword',
       component: ResetPassword,
       meta:{
-        requiresAuth: true
+        requiresResetToken: true
       }
     },
     {
@@ -84,7 +86,7 @@ const router = createRouter({
       name: 'Profile',
       component: UserProfile,
       meta:{
-        requiresResetToken: true
+        requiresAuth: true
       }
     },
     {

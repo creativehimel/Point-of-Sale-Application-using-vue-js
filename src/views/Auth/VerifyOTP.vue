@@ -1,11 +1,12 @@
 <script setup>
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import AuthLayout from '@/components/layouts/AuthLayout.vue'
 const auth = useAuthStore()
 const otp = ref('')
 </script>
 <template>
-  <section class="bg-slate-100 h-screen flex items-center justify-center">
+  <AuthLayout>
     <div class="bg-white max-w-lg w-full rounded p-5 shadow">
       <from class="" action="#" method="POST">
         <h2 class="text-center text-3xl font-bold pt-5">Verify Your OTP Code</h2>
@@ -58,7 +59,7 @@ const otp = ref('')
         </div>
       </from>
     </div>
-  </section>
+  </AuthLayout>
 </template>
 
 <style scoped></style>

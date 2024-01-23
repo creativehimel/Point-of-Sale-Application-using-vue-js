@@ -1,5 +1,10 @@
-<script setup></script>
-
+<script setup>
+import GuestLayout from '@/components/layouts/GuestLayout.vue'
+</script>
 <template>
-  <main></main>
+<GuestLayout></GuestLayout>
 </template>
+<style scoped>
+
+</style>
+

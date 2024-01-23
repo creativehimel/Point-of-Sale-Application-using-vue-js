@@ -1,12 +1,13 @@
 <script setup>
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import AuthLayout from '@/components/layouts/AuthLayout.vue'
 const auth = useAuthStore()
 const password = ref('')
 const cpassword = ref('')
 </script>
 <template>
-  <section class="bg-slate-100 px-4 py-16 md:py-28 flex items-center justify-center">
+  <AuthLayout>
     <div class="bg-white max-w-lg w-full rounded p-5 shadow">
       <from class="" action="#" method="POST">
         <h2 class="text-center text-3xl font-bold pt-5">Set New Password</h2>
@@ -69,7 +70,7 @@ const cpassword = ref('')
         </div>
       </from>
     </div>
-  </section>
+  </AuthLayout>
 </template>
 
 <style scoped></style>
